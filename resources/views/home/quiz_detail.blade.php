@@ -1,8 +1,9 @@
 <x-guest-layout>
     <x-slot name="header">{{ __('Quiz Detayı') }}</x-slot>
     <div class="sm:pt-14">
-        <div class="row justify-content-between col-md-8 mx-auto">
-            <div class="col-md-8 p-0">
+        <div class="row justify-content-evenly col-md-11 mx-auto">
+
+            <div class="col-md-6 p-0">
                 <div class="overflow-hidden bg-white shadow sm:rounded-lg">
                     <div class="card-body md:px-5 mb-5">
                         <div class="card-title">
@@ -43,15 +44,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 p-0">
+            <div class="col-md-2 order-md-last p-0">
                 <div class="overflow-hidden bg-white shadow sm:rounded-lg">
                     <div class="card-body">
                         <div class="card-title">
                             <h3>{{ __('Bilgileriniz')}}</h3>
                         </div>
-
                         <ul class="list-group mb-1">
-                            <li class="list-group-item d-flex w-100 justify-content-between align-items-center px-2">
+                            <li class="list-group-item d-flex w-100 justify-content-between align-items-center px-2 py-1">
                                 @if ($quiz->my_result)
                                     <span>Puanınız</span>
                                     <span class="badge {{($quiz->my_result->point >= 50) ? 'bg-success' : 'bg-danger' }} rounded-pill">{{$quiz->my_result->point}}</span>
@@ -62,7 +62,7 @@
                             </li>
                         </ul>
                         <ul class="list-group mb-1">
-                            <li class="list-group-item d-flex w-100 justify-content-between align-items-center px-2">
+                            <li class="list-group-item d-flex w-100 justify-content-between align-items-center px-2 py-1">
                                 <span>Doğru Cevap</span>
                                 @if ($quiz->my_result)
                                     <span class="badge bg-success rounded-pill">{{$quiz->my_result->correct}}</span>
@@ -72,7 +72,7 @@
                             </li>
                         </ul>
                         <ul class="list-group mb-1">
-                            <li class="list-group-item d-flex w-100 justify-content-between align-items-center px-2">
+                            <li class="list-group-item d-flex w-100 justify-content-between align-items-center px-2 py-1">
                                 <span>Yanlış Cevap</span>
                                 @if ($quiz->my_result)
                                     <span class="badge bg-danger rounded-pill">{{$quiz->my_result->wrong}}</span>
@@ -82,7 +82,7 @@
                             </li>
                         </ul>
                         <ul class="list-group mb-1">
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-2">
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
                                 <span>Soru Sayısı</span>
                                 @if ($quiz->my_result)
                                     <span class="badge bg-primary rounded-pill">{{$quiz->my_result->correct+$quiz->my_result->wrong}}</span>
@@ -91,6 +91,47 @@
                                 @endif
                             </li>
                         </ul>
+                        <ul class="list-group mb-1">
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
+                                <span>Sıralamanız</span>
+                                @if ($quiz->my_result)
+                                    <span class="badge bg-secondary rounded-pill">{{$quiz->myRank}}</span>
+                                @else
+                                    <span class="badge bg-primary rounded-pill"></span>
+                                @endif
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 order-md-first p-0">
+                <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3>{{ __('İlk On')}}</h3>
+                        </div>
+                        @if ($quiz->topTen->count() > 0)
+                            @foreach($quiz->topTen as $topuser)
+                                <ul class="list-group mb-1">
+                                    <li class="list-group-item d-flex w-100 justify-content-between align-items-center px-1 py-0">
+                                        <div class="d-flex justify-content-start align-items-center">
+                                            <img class="h-8 w-8 rounded-full" src="{{$topuser->user->profile_photo_url}}" title="{{$topuser->user->name}}">&nbsp;
+
+                                            <span class="{{(auth()->user()->id == $topuser->user->id) ? 'badge bg-success' : ''}}">{{$loop->iteration.'. '.$topuser->user->name}}</span>
+                                        </div>
+                                        <div class="justify-content-end">
+                                            <span class="badge {{($topuser->point >= 50) ? 'bg-success' : 'bg-danger' }} rounded-pill">{{$topuser->point}}</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            @endforeach
+                        @else
+                            <ul class="list-group mb-1">
+                                <li class="list-group-item align-content-center px-2">
+                                    <span>{{'Bu Quiz\'e Henüz Katılım Olmadı.'}}</span>
+                                </li>
+                            </ul>
+                        @endif
                     </div>
                 </div>
             </div>

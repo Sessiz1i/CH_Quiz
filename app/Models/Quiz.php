@@ -14,7 +14,18 @@
         protected $fillable = ['title', 'slug', 'description', 'status', 'finished_at'];
         protected $dates = ['finished_at'];
         // Sutun ekleme
-        protected $appends = ['average','joinUsers','user'];
+        protected $appends = ['average', 'joinUsers', 'user', 'myRank'];
+
+        public function getmyRankAttribute()
+        {
+            $myRank = 0;
+            foreach ($this->results()->orderByDesc('point')->get() as $results) {
+                $myRank++;
+                if (auth()->user()->id == $results->user_id) {
+                    return $myRank;
+                }
+            }
+        }
 
         public function getAverageAttribute()
         {
@@ -48,10 +59,16 @@
         {
             return $date ? Carbon::parse($date) : null;
         }
+
         //-----------------
         public function questions()
         {
             return $this->hasMany(Question::class, 'quiz_id', 'id');
+        }
+
+        public function topTen()
+        {
+            return $this->results()->orderByDesc('point')->take(10);
         }
 
         public function results()

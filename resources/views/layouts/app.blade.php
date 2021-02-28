@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style> a { color: inherit; text-decoration: none; } a:hover { color: inherit; text-decoration: none; } a:not([href]):not([class]) { color: inherit; text-decoration: none; }  a:not([href]):not([class]):hover { color: inherit; text-decoration: none; } </style>
     <style>

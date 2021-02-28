@@ -17,7 +17,6 @@
         public function welcome()
         {
             $quizzes = Quiz::where('status', 'active')->withCount('questions')->paginate(3);
-
             return view('welcome', compact('quizzes'));
         }
 
@@ -28,16 +27,15 @@
 
         public function quiz($slug)
         {
-
-            $quiz = Quiz::whereSlug($slug)->withCount('questions')->with('questions')->first();
+        $quiz = Quiz::whereSlug($slug)->withCount('questions')->with('questions.myAnswer','my_result')->first() ?? abort(404, 'Quiz buşlumnalamdı');
+            if ($quiz->my_result) return view('home.quiz_result', compact('quiz'));
             return view('home.quiz', compact('quiz'));
         }
 
         public function detail($slug)
         {
 
-            $quiz = Quiz::whereSlug($slug)->with('my_result', 'results')->withCount('questions')->first() ?? abort(404, 'Quiz buşlumnalamdı');
-
+            $quiz = Quiz::whereSlug($slug)->with('my_result', 'topTen.user')->withCount('questions')->first() ?? abort(404, 'Quiz buşlumnalamdı');
             return view('home.quiz_detail', compact('quiz'));
         }
 
@@ -47,8 +45,6 @@
             $quiz = Quiz::whereSlug($slug)->with('questions')->first() ?? abort(404, 'Quiz buşlumnalamdı');
 
             $correct = 0;
-
-
             foreach ($quiz->questions as $question) {
                 Answers::create([
                     'user_id' => auth()->user()->id,
@@ -95,7 +91,7 @@
          * Display the specified resource.
          *
          * @param $slug
-         * @retu    rn Application|Factory|View|Response
+         * @return Application|Factory|View|Response
          */
         public function show()
         {

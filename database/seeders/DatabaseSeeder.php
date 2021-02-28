@@ -18,7 +18,7 @@
             $this->call(UserSeeder::class);
             $this->call(QuizSeeder::class);
             $this->call(QuestionSeeder::class);
-         //   $this->call(AnswersSeeder::class);
-         //   $this->call(ResultSeeder::class);
+            $this->call(AnswersSeeder::class);
+            $this->call(ResultSeeder::class);
         }
     }

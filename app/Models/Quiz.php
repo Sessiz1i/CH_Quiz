@@ -18,13 +18,17 @@
 
         public function getmyRankAttribute()
         {
-            $myRank = 0;
-            foreach ($this->results()->orderByDesc('point')->get() as $results) {
-                $myRank++;
-                if (auth()->user()->id == $results->user_id) {
-                    return $myRank;
+            if (auth()->user()) {
+                $myRank = 0;
+                foreach ($this->results()->orderByDesc('point')->get() as $results) {
+                    $myRank++;
+                    if (auth()->user()->id == $results->user_id) {
+                        return $myRank;
+                    }
                 }
             }
+
+            return null;
         }
 
         public function getAverageAttribute()

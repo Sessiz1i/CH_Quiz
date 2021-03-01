@@ -18,6 +18,11 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    public function myResults()
+    {
+        return $this->hasMany(Result::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

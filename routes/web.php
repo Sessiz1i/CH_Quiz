@@ -24,20 +24,15 @@
 
     Route::get('/',                                             [HomeController::class,'welcome'])->name('welcome');
 
-    Route::name('home.')->group(function (){
-
-
-    });
-
-
 
 
     // Login Route
     Route::middleware(['auth:sanctum', 'verified'])->name('home.')->group(function (){
 
-        Route::get('quiz/{slug}',                               [HomeController::class,'quiz'])->name('quiz.join');
-        Route::get('quiz/detay/{slug}',                             [HomeController::class,'detail'])->name('quiz.detay');
-        Route::post('quiz/{slug}/result',                        [HomeController::class,'result'])->name('quiz.result');
+        Route::get('quiz/{slug}',                   [HomeController::class,'quiz'])->name('quiz.join');
+        Route::get('quiz/detay/{slug}',             [HomeController::class,'detail'])->name('quiz.detay');
+        Route::post('quiz/{slug}/result',           [HomeController::class,'result'])->name('quiz.result');
+        Route::get('quizzes/{user}/my-result',       [HomeController::class,'myQuizzes'])->name('my-quizzes');
 
     });
 

@@ -9,7 +9,7 @@
                         <div class="card-title">
                         </div>
                         <div class="list-group">
-                            <a class="list-group-item">
+                            <a class="list-group-item pb-1">
                                 <div class="d-flex w-100 justify-content-between mb-2">
                                     <h3 class="text-gray-600 mt-1">{{ $quiz->title }}</h3>
                                 </div>
@@ -115,7 +115,7 @@
                                 <ul class="list-group mb-1">
                                     <li class="list-group-item d-flex w-100 justify-content-between align-items-center px-1 py-0">
                                         <div class="d-flex justify-content-start align-items-center">
-                                            <img class="h-8 w-8 rounded-full" src="{{$topuser->user->profile_photo_url}}" title="{{$topuser->user->name}}">&nbsp;
+                                            <img class="h-10 w-10 rounded-full object-cover" src="{{$topuser->user->profile_photo_url}}" title="{{$topuser->user->name}}">&nbsp;
 
                                             <span class="{{(auth()->user()->id == $topuser->user->id) ? 'badge bg-success' : ''}}">{{$loop->iteration.'. '.$topuser->user->name}}</span>
                                         </div>

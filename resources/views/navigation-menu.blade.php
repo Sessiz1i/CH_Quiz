@@ -13,15 +13,18 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('welcome') }}" :active="request()->routeIs('welcome')">
-                        {{ __('Quizler') }}
+                        {{ __('Tüm Quizler') }}
                     </x-jet-nav-link>
+                    @if (Auth::user())
+                        {{-- Kulanıcılar için--}}
+                        <x-jet-nav-link href="{{ route('home.my-quizzes',Str::slug(auth()->user()->name)) }}" :active="request()->routeIs('*my-quizzes*')">
+                            {{ __('Katıldığın Quizler') }}
+                        </x-jet-nav-link>
+                    @endif
                     @if (Auth::user() && Auth::user()->role == 'admin')
                         <x-jet-nav-link href="{{ route('admin.quizzes.index') }}" :active="request()->routeIs('admin.quizzes.index')">
                             {{ __('Quiz İşlemleri') }}
                         </x-jet-nav-link>
-                    @endif
-                    @if (Auth::user() && Auth::user()->role == 'user')
-                           {{-- Kulanıcılar için--}}
                     @endif
                 </div>
             </div>

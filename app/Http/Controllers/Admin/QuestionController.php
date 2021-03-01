@@ -25,7 +25,8 @@
          */
         public function index($id)
         {
-            $quiz = Quiz::whereId($id)->with('questions')->first() ?? abort(404, 'Quiz Bulunamadı...');
+
+          return  $quiz = Quiz::whereId($id)->with('questions')->first() ?? abort(404, 'Quiz Bulunamadı...');
 
             $questions = Question::where('quiz_id', '=', $id)->paginate(5);
 

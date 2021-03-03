@@ -40,7 +40,7 @@
     @if(isset($header))
         <header class="bg-white sm:shadow-lg border-b">
             <div class="px-4 py-6 pb-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <h3 class="font-semibold leading-tight text-gray-800">
+                <h3 class="font-semibold leading-tight text-gray-600 text-center">
                     {{ $header }}
                 </h3>
             </div>

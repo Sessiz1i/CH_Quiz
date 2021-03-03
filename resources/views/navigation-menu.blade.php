@@ -9,7 +9,6 @@
                         <x-jet-application-mark class="block h-9 w-auto"/>
                     </a>
                 </div>
-
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('welcome') }}" :active="request()->routeIs('welcome')">
@@ -17,8 +16,11 @@
                     </x-jet-nav-link>
                     @if (Auth::user())
                         {{-- Kulanıcılar için--}}
+                        <x-jet-nav-link href="{{ route('home.my-quizzes',Str::slug(auth()->user()->name)) }}" :active="request()->routeIs('*acc-quizzes*')">
+                            {{ __('Katılmadığınız Quizler') }}
+                        </x-jet-nav-link>
                         <x-jet-nav-link href="{{ route('home.my-quizzes',Str::slug(auth()->user()->name)) }}" :active="request()->routeIs('*my-quizzes*')">
-                            {{ __('Katıldığın Quizler') }}
+                            {{ __('Quizleriniz') }}
                         </x-jet-nav-link>
                     @endif
                     @if (Auth::user() && Auth::user()->role == 'admin')
@@ -162,16 +164,21 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-jet-responsive-nav-link href="{{ route('welcome') }}" :active="request()->routeIs('welcome')">
-                {{ __('Welcome') }}
+                {{ __('Tüm Quizler') }}
             </x-jet-responsive-nav-link>
-            @if (Auth::user() && Auth::user()->role == 'admin')
-                <x-jet-responsive-nav-link href="{{ route('admin.quizzes.index') }}" :active="request()->routeIs('admin.quizzes.index')">
-                    {{ __('Quizzes') }}
+            @if (Auth::user())
+{{--
+                <x-jet-responsive-nav-link href="{{ route('home.acc-quizzes',Str::slug(auth()->user()->name)) }}" :active="request()->routeIs('*acc-quizzes*')">
+                    {{ __('Katılmadığınız Quizler') }}
+                </x-jet-responsive-nav-link>
+--}}
+                <x-jet-responsive-nav-link href="{{ route('home.my-quizzes',Str::slug(auth()->user()->name)) }}" :active="request()->routeIs('*my-quizzes*')">
+                    {{ __('Quizleriniz') }}
                 </x-jet-responsive-nav-link>
             @endif
-            @if (Auth::user() && Auth::user()->role == 'user')
-                <x-jet-responsive-nav-link href="{{ route('welcome') }}" :active="request()->routeIs('welcome')">
-                    {{ __('Users') }}
+        @if (Auth::user() && Auth::user()->role == 'admin')
+                <x-jet-responsive-nav-link href="{{ route('admin.quizzes.index') }}" :active="request()->routeIs('admin.quizzes.index')">
+                    {{ __('Quiz İşlemleri') }}
                 </x-jet-responsive-nav-link>
             @endif
         </div>

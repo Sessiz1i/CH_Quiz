@@ -5,22 +5,28 @@
     use App\Models\Answers;
     use App\Models\Quiz;
     use App\Models\Result;
-    use App\Models\User;
-    use Facade\Ignition\Tabs\Tab;
     use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Contracts\View\Factory;
     use Illuminate\Contracts\View\View;
     use Illuminate\Http\Request;
     use Illuminate\Http\Response;
     use Illuminate\Support\Facades\DB;
-    use Psr\Log\NullLogger;
 
 
     class HomeController extends Controller
     {
-        public function welcome()
+        public function welcome(Request $request)
         {
-            $quizzes = Quiz::where('status', 'active')->where('finished_at', '>', now())->orWhereNull('finished_at')->withCount('questions')->orderBy('updated_at', 'desc')->paginate(3);
+            $quizzes = Quiz::where('status', 'active')->where(function ($query) {
+                $query->whereNull('finished_at')->orWhere('finished_at', '>', now());
+            })->withCount('questions');
+
+            if ($request->title) {
+                $quizzes = $quizzes->where('title', 'LIKE', '%' . $request->title . '%');
+            }
+
+          $quizzes = $quizzes->orderBy('updated_at', 'desc')->paginate(5);
+
 
             return view('welcome', compact('quizzes'));
         }
@@ -32,11 +38,23 @@
             // $quizzes = DB::table('quizzes')->join('results', 'results.quiz_id', 'quizzes.id')->where('user_id', auth()->user()->id)->orderBy('title', 'Asc')->get();
             // $quizzes = DB::table('quizzes')->join('results', 'results.quiz_id', '=', 'quizzes.id')->where('user_id', '=', auth()->user()->id)->paginate(3);
 
-            $quizzes = Quiz::join('results', 'results.quiz_id', '=', 'quizzes.id')->where('user_id', '=', auth()->user()->id)->paginate(3);
+            $quizzes = Quiz::where('status', 'active')->where(function ($query) {
+                $query->whereNull('finished_at')->orWhere('finished_at', '>', now());
+            })->with('my_result')->withCount('questions')->has('my_result')->orderBy('updated_at', 'desc')->paginate(3);
 
-            $results = auth()->user()->myResults;
+            return view('welcome', compact('quizzes',));
+        }
 
-            return view('home.my-quizzes', compact('quizzes', 'results'));
+        public function accessibleQuiz($user)
+        {
+
+
+            $quizzes = Quiz::where('status', 'active')->where(function ($query) {
+                $query->whereNull('finished_at')->orWhere('finished_at', '>', now());
+            })->with('my_result')->withCount('questions')->doesntHave('my_result')->orderBy('updated_at', 'desc')->paginate(3);
+
+
+            return view('welcome', compact('quizzes'));
         }
 
         public function quiz($slug)

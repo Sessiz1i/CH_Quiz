@@ -1,10 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">{{$quiz->title}} - {{ __('Quiz\'i Sonuc Puanınız: ') .$quiz->my_result->point}} </x-slot>
+    <x-slot name="header">{{$quiz->title}}</x-slot>
     <div class="sm:pt-14">
         <div class="col-md-6 mx-auto overflow-hidden bg-white shadow sm:rounded-lg">
             <div class="card-body md:px-5">
                 <div class="card-title">
-                    <h3>{{ __('Quiz\'e verdiğiniz cevaplar.')}}</h3>
+                    <h3>{{ __('Quiz\'e verdiğiniz cevaplar.')}} - {{ __('Puanınız: ') .$quiz->my_result->point}}</h3>
                 </div>
                 @foreach ($quiz->questions as $question)
                     <div class="list-group mb-2">
@@ -64,7 +64,7 @@
                             <div class="row col-md-14 border-t">
                                 <div class="col-md-3 pb-0 d-flex justify-content-between align-items-center">
                                     <span>Doğru cevap oranı %</span>
-                                    <small class="badge {{$question->TruePercent >= 50 ? 'bg-success' : 'bg-danger' }} rounded-pill">{{$question->TruePercent}}</small>
+                                    <small style="width: 37px;" class="badge {{$question->TruePercent >= 50 ? 'bg-success' : 'bg-danger' }} rounded-pill">{{$question->TruePercent}}</small>
                                 </div>
                             </div>
                         </div>

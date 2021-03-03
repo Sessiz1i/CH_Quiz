@@ -14,18 +14,6 @@
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style> a { color: inherit; text-decoration: none; } a:hover { color: inherit; text-decoration: none; } a:not([href]):not([class]) { color: inherit; text-decoration: none; }  a:not([href]):not([class]):hover { color: inherit; text-decoration: none; } </style>
-    <style>
-        .sticky-gb {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 205px;
-            z-index: 1000;
-        }
-        *{
-            margin: 0;
-            padding: 0;
-        }
-    </style>
 @livewireStyles
 
 <!-- Scripts -->

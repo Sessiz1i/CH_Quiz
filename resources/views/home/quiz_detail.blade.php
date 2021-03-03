@@ -1,8 +1,7 @@
-<x-guest-layout>
+<x-app-layout>
     <x-slot name="header">{{ __('Quiz Detayı') }}</x-slot>
     <div class="sm:pt-14">
         <div class="row justify-content-evenly col-md-11 mx-auto">
-
             <div class="col-md-6 p-0">
                 <div class="overflow-hidden bg-white shadow sm:rounded-lg">
                     <div class="card-body md:px-5 mb-5">
@@ -18,15 +17,15 @@
                                     <hr class="my-1">
                                     <div class="col-md-3 flex justify-content-between align-items-center">
                                         <span>Soru sayısı: </span>
-                                        <small class="badge bg-secondary rounded-pill">{{ $quiz->questions_count }}</small>
+                                        <small style="width: 37px;" class="badge bg-secondary rounded-pill">{{ $quiz->questions_count }}</small>
                                     </div>
                                     <div class="col-md-3 flex justify-content-between align-items-center">
                                         <span>Katılımcı sayısı: </span>
-                                        <small class="badge bg-secondary rounded-pill">{{ $quiz->joinUsers ? $quiz->joinUsers : 0}}</small>
+                                        <small style="width: 37px;" class="badge bg-secondary rounded-pill">{{ $quiz->joinUsers ? $quiz->joinUsers : 0}}</small>
                                     </div>
                                     <div class="col-md-3 flex justify-content-between align-items-center">
                                         <span>Ortalama Puan: </span>
-                                        <small class="badge {{($quiz->average >= 50) ? 'bg-success' : 'bg-danger' }} rounded-pill">{{ $quiz->average ? $quiz->average : 0}}</small>
+                                        <small style="width: 37px;" class="badge {{($quiz->average >= 50) ? 'bg-success' : 'bg-danger' }} rounded-pill">{{ $quiz->average ? $quiz->average : 0}}</small>
                                     </div>
                                     <div class="col-md-3 flex justify-content-end align-items-center">
                                         <span class="text-muted" title="{{ $quiz->finished_at }}">{{($quiz->finished_at) ? $quiz->finished_at->diffForHumans().' bitiyor' : 'Süre sınırı yok' }}</span>
@@ -54,7 +53,7 @@
                             <li class="list-group-item d-flex w-100 justify-content-between align-items-center px-2 py-1">
                                 @if ($quiz->my_result)
                                     <span>Puanınız</span>
-                                    <span class="badge {{($quiz->my_result->point >= 50) ? 'bg-success' : 'bg-danger' }} rounded-pill">{{$quiz->my_result->point}}</span>
+                                    <span style="width: 37px;" class="badge {{($quiz->my_result->point >= 50) ? 'bg-success' : 'bg-danger' }} rounded-pill">{{$quiz->my_result->point}}</span>
                                 @else
                                     <span>Puanınız</span>
                                     <span class="badge bg-secondary rounded-pill">{{'Bu Quiz\'e Katılmadınız.'}}</span>
@@ -65,7 +64,7 @@
                             <li class="list-group-item d-flex w-100 justify-content-between align-items-center px-2 py-1">
                                 <span>Doğru Cevap</span>
                                 @if ($quiz->my_result)
-                                    <span class="badge bg-success rounded-pill">{{$quiz->my_result->correct}}</span>
+                                    <span style="width: 37px;" class="badge bg-success rounded-pill">{{$quiz->my_result->correct}}</span>
                                 @else
                                     <span class="badge bg-success rounded-pill"></span>
                                 @endif
@@ -75,7 +74,7 @@
                             <li class="list-group-item d-flex w-100 justify-content-between align-items-center px-2 py-1">
                                 <span>Yanlış Cevap</span>
                                 @if ($quiz->my_result)
-                                    <span class="badge bg-danger rounded-pill">{{$quiz->my_result->wrong}}</span>
+                                    <span style="width: 37px;" class="badge bg-danger rounded-pill">{{$quiz->my_result->wrong}}</span>
                                 @else
                                     <span class="badge bg-danger rounded-pill"></span>
                                 @endif
@@ -85,7 +84,7 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
                                 <span>Soru Sayısı</span>
                                 @if ($quiz->my_result)
-                                    <span class="badge bg-primary rounded-pill">{{$quiz->my_result->correct+$quiz->my_result->wrong}}</span>
+                                    <span style="width: 37px;" class="badge bg-primary rounded-pill">{{$quiz->my_result->correct+$quiz->my_result->wrong}}</span>
                                 @else
                                     <span class="badge bg-primary rounded-pill"></span>
                                 @endif
@@ -95,7 +94,7 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
                                 <span>Sıralamanız</span>
                                 @if ($quiz->my_result)
-                                    <span class="badge bg-secondary rounded-pill">{{$quiz->myRank}}</span>
+                                    <span style="width: 37px;" class="badge bg-secondary rounded-pill">{{$quiz->myRank}}</span>
                                 @else
                                     <span class="badge bg-primary rounded-pill"></span>
                                 @endif
@@ -120,7 +119,7 @@
                                             <span class="{{(auth()->user()->id == $topuser->user->id) ? 'badge bg-success' : ''}}">{{$loop->iteration.'. '.$topuser->user->name}}</span>
                                         </div>
                                         <div class="justify-content-end">
-                                            <span class="badge {{($topuser->point >= 50) ? 'bg-success' : 'bg-danger' }} rounded-pill">{{$topuser->point}}</span>
+                                            <span style="width: 37px;" class="badge {{($topuser->point >= 50) ? 'bg-success' : 'bg-danger' }} rounded-pill">{{$topuser->point}}</span>
                                         </div>
                                     </li>
                                 </ul>
@@ -137,4 +136,4 @@
             </div>
         </div>
     </div>
-</x-guest-layout>
+</x-app-layout>

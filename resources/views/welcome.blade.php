@@ -47,7 +47,7 @@
                                     <div class="row col-md-14 border-t">
                                         <div class="col-md-3 flex justify-content-between align-items-center">
                                             <small>Soru sayısı: </small>
-                                            <span style="font-size: 2.5mm; width: 28px;" class=" badge bg-secondary rounded-pill">{{ $quiz->questions_count }}</span>
+                                            <span style="font-size: 2.5mm; width: 28px;" class=" badge bg-secondary rounded-pill">{{ $quiz->quiz_list_count }}</span>
                                         </div>
                                         <div class="col-md-3 flex justify-content-between align-items-center">
                                             <small>Katılımcı sayısı: </small>

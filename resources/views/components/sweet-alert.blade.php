@@ -26,4 +26,7 @@
             title: '{{ Str::title(session('success')) }}'
         })
     </script>
+@php
+Session::remove('success');
+@endphp
 @endif

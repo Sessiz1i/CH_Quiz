@@ -1,18 +1,17 @@
 <x-app-layout>
-    <x-slot name="header">{{ $quiz->title }} {{ __('için yeni soru oluştur.') }} </x-slot>
+    <x-slot name="header">{{ __('Question Oluşturma Sayfasındasınız') }}</x-slot>
     <div class="sm:pt-14">
-        <div class="col-md-6 p-1 mx-auto overflow-hidden bg-white shadow sm:rounded-lg">
+        <div class="card col-md-6 mx-auto overflow-hidden bg-white shadow sm:rounded-lg">
             <div class="card-body">
-                <a href="{{route('admin.questions.index',$quiz->id)}}" type="button" class="btn btn-secondary float-end">{{ __('Geri Dön') }}&nbsp;<i class="fa fa-share"></i></a>
-                <div class="card-title  mb-4">
-                    <h4>Aşağıdaki alanları doldurarak yeni soru oluşturabilirsiniz.</h4>
+                <div class="card-title d-flex justify-content-end">
+                    <a href="{{route('admin.questions.index')}}" type="button" class="btn btn-secondary">{{ __('Geri Dön') }}&nbsp;<i class="fa fa-share"></i></a>
                 </div>
-                <form method="POST" action="{{route('admin.questions.store',$quiz->id)}}" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <form method="POST" action="{{route('admin.questions.store')}}" enctype="multipart/form-data" class="needs-validation" novalidate>
                     @csrf @method('POST')
                     {{-- Image Input --}}
-                    <div class="form-floating mb-2">
-                        <input id="imageInput" type="file" name="image" value="{{old('image')}}" class="form-control form-control @error('image') is-invalid @enderror" placeholder="Resim seçiniz">
-                        <label for="imageInput" class="p-2 mt-1">{{ __('Resim ekleyebilirsiniz ( İsteğe bağlı )') }}</label>
+                    <div class="input-group mb-2">
+                        <input id="imageInput" type="file" name="image" value="{{old('image')}}" class="form-control @error('image') is-invalid @enderror" placeholder="Resim seçiniz">
+                        <label class="input-group-text" for="imageInput">{{ __('Resim Ekleyebilirsiniz ( İsteğe Bağlı )') }}</label>
                         @error('image')
                         <span class="invalid-feedback" role="alert"><strong><i class="fa fa-times">&nbsp;</i>{{ Str::title($message) }}</strong></span>
                         @enderror
@@ -22,9 +21,7 @@
                         <textarea id="questionTextarea" name="question" class="form-control @error('question') is-invalid @enderror " placeholder=" " style="height: 100px">{{old('question')}}</textarea>
                         <label for="questionTextarea">{{ __('Lütfen yeni bir Soru yazınız...') }}</label>
                         @error('question')
-                        <span class="invalid-feedback" role="alert">
-                        <strong><i class="fa fa-times">&nbsp;</i>{{ Str::title($message) }}</strong>
-                    </span>
+                        <span class="invalid-feedback" role="alert"><strong><i class="fa fa-times">&nbsp;</i>{{ Str::title($message) }}</strong></span>
                         @enderror
                     </div>
                     {{-- Cevap Input --}}
@@ -88,7 +85,7 @@
                         <span class="invalid-feedback" role="alert"><strong><i class="fa fa-times">&nbsp;</i>{{ Str::title($message) }}</strong></span>
                         @enderror
                     </div>
-                    <div class="form-floating flex justify-content-end">
+                    <div class="flex justify-content-end">
                         <button type="submit" class="btn btn-success">{{ __('Oluştur') }}</button>
                     </div>
                 </form>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Answers;
 use App\Models\Quiz;
+use App\Models\Listing;
 use App\Models\Result;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -17,9 +18,19 @@ class HomeController extends Controller
 {
     public function welcome(Request $request)
     {
+
+
+        $timeOuts = Quiz::whereStatus('active')->where('finished_at', '<', now())->get();
+        if ($timeOuts)
+        {
+            foreach ($timeOuts as $timeOut)
+            {
+                $timeOut->update(['status' => 'passive']);
+            }
+        }
         $quizzes = Quiz::where('status', 'active')->where(function ($query) {
             $query->whereNull('finished_at')->orWhere('finished_at', '>', now());
-        })->withCount('questions');
+        })->withCount('quizList');
 
         if ($request->title)
         {
@@ -38,7 +49,6 @@ class HomeController extends Controller
             $quizzes->withCount('my_result')->doesntHave('my_result');
         }
 
-
         $quizzes = $quizzes->orderBy('updated_at', 'desc')->paginate(5);
         return view('welcome', compact('quizzes'));
     }
@@ -50,7 +60,7 @@ class HomeController extends Controller
         // $quizzes = DB::table('quizzes')->join('results', 'results.quiz_id', 'quizzes.id')->where('user_id', auth()->user()->id)->orderBy('title', 'Asc')->get();
         // $quizzes = DB::table('quizzes')->join('results', 'results.quiz_id', '=', 'quizzes.id')->where('user_id', '=', auth()->user()->id)->paginate(3);
 
-        $quizzes = Quiz::with('my_result')->withCount('questions')->has('my_result')->orderBy('updated_at', 'desc')->paginate(5);
+        $quizzes = Quiz::with('my_result')->withCount('quizList')->has('my_result')->orderBy('updated_at', 'desc')->paginate(5);
 
         return view('welcome', compact('quizzes',));
     }
@@ -61,7 +71,7 @@ class HomeController extends Controller
 
         $quizzes = Quiz::where('status', 'active')->where(function ($query) {
             $query->whereNull('finished_at')->orWhere('finished_at', '>', now());
-        })->with('my_result')->withCount('questions')->doesntHave('my_result')->orderBy('updated_at', 'desc')->paginate(3);
+        })->with('my_result')->withCount('quizList')->doesntHave('my_result')->orderBy('updated_at', 'desc')->paginate(3);
 
 
         return view('welcome', compact('quizzes'));
@@ -69,7 +79,7 @@ class HomeController extends Controller
 
     public function quiz($slug)
     {
-        $quiz = Quiz::whereSlug($slug)->withCount('questions')->with('questions.myAnswer', 'my_result')->first() ?? abort(404, 'Quiz buşlumnalamdı');
+        $quiz = Quiz::whereSlug($slug)->withCount('quizList')->with('quizList.questionList', 'quizList.myAnswer', 'my_result')->first() ?? abort(404, 'Quiz bulunamadı');
         if ($quiz->my_result)
             return view('home.quiz_result', compact('quiz'));
         return view('home.quiz', compact('quiz'));
@@ -77,27 +87,26 @@ class HomeController extends Controller
 
     public function detail($slug)
     {
-
-        $quiz = Quiz::whereSlug($slug)->with('my_result', 'topTen.user')->withCount('questions')->first() ?? abort(404, 'Quiz buşlumnalamdı');
+        $quiz = Quiz::whereSlug($slug)->with('my_result', 'topTen.user')->withCount('quizList')->first() ?? abort(404, 'Quiz bulunamadı');
         return view('home.quiz_detail', compact('quiz'));
     }
 
     public function result(Request $request, $slug)
     {
-
-        $quiz = Quiz::whereSlug($slug)->with('questions')->first() ?? abort(404, 'Quiz buşlumnalamdı');
+        $quiz = Quiz::whereSlug($slug)->with('quizList.questionList')->first() ?? abort(404, 'Quiz bulunamadı');
 
         $correct = 0;
-        foreach ($quiz->questions as $question)
+        foreach ($quiz->quizList as $question)
         {
-            Answers::create(['user_id' => auth()->user()->id, 'question_id' => $question->id, 'answer' => $request->post($question->id),]);
-            if ($question->correct_answer === $request->post($question->id))
+
+            Answers::create(['user_id' => auth()->user()->id, 'question_id' => $question->question_id, 'answer' => $request->post($question->question_id),]);
+            if ($question->questionList->correct_answer === $request->post($question->question_id))
             {
                 $correct++;
             }
         }
-        Result::create(['user_id' => auth()->user()->id, 'quiz_id' => $quiz->id, 'point' => round((100 / count($quiz->questions)) * $correct), 'correct' => $correct, 'wrong' => count($quiz->questions) - $correct,]);
-        return redirect()->route('home.quiz.detay', $quiz->slug)->withInput()->withSuccess('Quiz\i tamamladın. Puanın : ' . round((100 / count($quiz->questions)) * $correct));
+        Result::create(['user_id' => auth()->user()->id, 'quiz_id' => $quiz->id, 'point' => round((100 / count($quiz->quizList)) * $correct), 'correct' => $correct, 'wrong' => count($quiz->quizList) - $correct,]);
+        return redirect()->route('home.quiz.detay', $quiz->slug)->withInput()->withSuccess('Quiz\i tamamladın. Puanın : ' . round((100 / count($quiz->quizList)) * $correct));
     }
 
 

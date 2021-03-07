@@ -15,9 +15,8 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('quiz_id');
-            $table->longText('image')->nullable();
             $table->longText('question');
+            $table->longText('image')->nullable();
             $table->longText('answer1');
             $table->longText('answer2');
             $table->longText('answer3');
@@ -25,7 +24,6 @@ class CreateQuestionsTable extends Migration
             $table->enum('correct_answer',['answer1','answer2','answer3','answer4']);
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
-            $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
         });
     }
 

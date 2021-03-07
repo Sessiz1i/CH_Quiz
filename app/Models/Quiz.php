@@ -16,6 +16,16 @@
         // Sutun ekleme
         protected $appends = ['average', 'joinUsers', 'user', 'myRank'];
 
+        public function quizList()
+        {
+            return $this->hasMany(Listing::class,'quiz_id','id');
+        }
+
+/*        public function questions()
+        {
+            return $this->hasMany(Listing::class)->with('questionList');
+        }*/
+
         public function getmyRankAttribute()
         {
             if (auth()->user()) {
@@ -65,10 +75,7 @@
         }
 
         //-----------------
-        public function questions()
-        {
-            return $this->hasMany(Question::class, 'quiz_id', 'id');
-        }
+
 
         public function topTen()
         {

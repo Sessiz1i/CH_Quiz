@@ -23,7 +23,7 @@ class QuizController extends Controller
     public function index(Request $request)
     {
 
-        $quizzes = Quiz::withCount('questions');
+        $quizzes = Quiz::withCount('quizList');
 
         if ($request->title) {
             $quizzes = $quizzes->where('title', 'LIKE', '%' . $request->title . '%');
@@ -79,7 +79,7 @@ class QuizController extends Controller
     public function edit(Quiz $quiz)
     {
 
-        $quiz = Quiz::withCount('questions')->find($quiz->id);
+        $quiz = Quiz::withCount('quizList')->find($quiz->id);
         return view('admin.quiz.edit',compact('quiz'))->withInput($quiz);
     }
 

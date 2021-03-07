@@ -155,9 +155,7 @@
         */
 
         'attributes' => [
-            'email' => 'E-Posta adresi',
-            'password' => 'Şifre',
-            'memberme' =>'Beni Hatırla'
+
         ],
 
     ];

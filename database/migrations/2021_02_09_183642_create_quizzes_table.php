@@ -22,6 +22,7 @@ class CreateQuizzesTable extends Migration
             $table->timestamp('finished_at')->nullable();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
+
         });
     }
 

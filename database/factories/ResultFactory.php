@@ -22,8 +22,8 @@ class ResultFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => rand(1,50),
-            'quiz_id' => rand(1,100),
+            'user_id' => rand(3,10),
+            'quiz_id' => rand(1,10),
             'point'=> rand(1,100),
             'correct'=> rand(1,10),
             'wrong'=> rand(1,10),

@@ -3,8 +3,8 @@
     <div class="sm:pt-14">
         <div class="row justify-content-evenly col-md-11 mx-auto">
             <div class="col-md-6 p-0">
-                <div class="overflow-hidden bg-white shadow sm:rounded-lg">
-                    <div class="card-body md:px-5 mb-5">
+                <div class="card overflow-hidden bg-white shadow sm:rounded-lg">
+                    <div class="card-body md:px-5">
                         <div class="card-title">
                         </div>
                         <div class="list-group">
@@ -17,7 +17,7 @@
                                     <hr class="my-1">
                                     <div class="col-md-3 flex justify-content-between align-items-center">
                                         <span>Soru sayısı: </span>
-                                        <small style="width: 37px;" class="badge bg-secondary rounded-pill">{{ $quiz->questions_count }}</small>
+                                        <small style="width: 37px;" class="badge bg-secondary rounded-pill">{{ $quiz->quiz_list_count }}</small>
                                     </div>
                                     <div class="col-md-3 flex justify-content-between align-items-center">
                                         <span>Katılımcı sayısı: </span>
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="col-md-2 order-md-last p-0">
-                <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+                <div class="card overflow-hidden bg-white shadow sm:rounded-lg">
                     <div class="card-body">
                         <div class="card-title">
                             <h3>{{ __('Bilgileriniz')}}</h3>
@@ -104,7 +104,7 @@
                 </div>
             </div>
             <div class="col-md-2 order-md-first p-0">
-                <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+                <div class="card overflow-hidden bg-white shadow sm:rounded-lg">
                     <div class="card-body">
                         <div class="card-title">
                             <h3>{{ __('İlk On')}}</h3>

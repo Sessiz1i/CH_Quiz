@@ -1,23 +1,22 @@
 <x-app-layout>
-    <x-slot name="header">{{ $question->question }} - {{ __('Düzenleme.') }} </x-slot>
+    <x-slot name="header">{{ __('Question Düzenleme Sayfasındasınız') }}</x-slot>
     <div class="sm:pt-14">
-        <div class="col-md-6 p-1 mx-auto overflow-hidden bg-white shadow sm:rounded-lg">
+        <div class="card col-md-6 mx-auto overflow-hidden bg-white shadow sm:rounded-lg">
             <div class="card-body">
-                <a style="float: right" href="{{ route('admin.questions.index', $question->quiz_id) }}" class="btn btn-secondary mb-3">{{ __('Geri Dön') }}&nbsp;<i class="fa fa-share"></i></a>
-                <div class="card-title  mb-4">
-                    <h4>{{ __('Aşağıdaki alanları değiştirerek soruyu düzenleyebilirsiniz.') }}</h4>
+                {{-- Image Input --}}
+                @if ($question->image)
+                    <div class="mb-3">
+                        <a href="{{asset($question->image)}}" target="_blank"><img width="300" class="img-thumbnail" src="{{asset($question->image)}}" alt="{{Str::title($question->question)}}" title="{{Str::title($question->question)}}"></a>
+                    </div>
+                @endif
+                <div class="card-title d-flex justify-content-end">
+                    <a  href="{{ route('admin.questions.index') }}" class="btn btn-secondary">{{ __('Geri Dön') }}&nbsp;<i class="fa fa-share"></i></a>
                 </div>
-                <form method="POST" action="{{route('admin.questions.update',[$question->quiz_id,$question->id])}}" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <form method="POST" action="{{route('admin.questions.update',$question->id)}}" enctype="multipart/form-data" class="needs-validation" novalidate>
                     @csrf @method('PUT')
-                    {{-- Image Input --}}
-                    @if ($question->image)
-                        <div class="mb-3">
-                            <a href="{{asset($question->image)}}" target="_blank"><img width="300" class="img-thumbnail" src="{{asset($question->image)}}" alt="{{Str::title($question->question)}}" title="{{Str::title($question->question)}}"></a>
-                        </div>
-                    @endif
-                    <div class="form-floating mb-2">
-                        <input id="imageInput" type="file" name="image" value="{{$question->image}}" class="form-control form-control @error('image') is-invalid @enderror" placeholder="Resim seçiniz">
-                        <label for="imageInput" class="p-2 mt-1">{{ __('Resim ekleyebilirsiniz ( İsteğe bağlı )') }}</label></input>
+                    <div class="input-group mb-2">
+                        <input id="imageInput" type="file" name="image" value="{{$question->image}}" class="form-control @error('image') is-invalid @enderror" placeholder="Resim seçiniz">
+                        <label class="input-group-text" for="imageInput">{{ __('Resim ekleyebilirsiniz ( İsteğe bağlı )') }}</label></input>
                         @error('image')
                         <span class="invalid-feedback" role="alert"><strong><i class="fa fa-times">&nbsp;</i>{{ Str::title($message) }}</strong></span>
                         @enderror
@@ -93,7 +92,7 @@
                         <span class="invalid-feedback" role="alert"><strong><i class="fa fa-times">&nbsp;</i>{{ Str::title($message) }}</strong></span>
                         @enderror
                     </div>
-                    <div class="form-floating flex justify-content-end">
+                    <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-success float-end">{{ __('Düzenle') }}</button>
                     </div>
                 </form>

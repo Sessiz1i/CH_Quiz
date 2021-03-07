@@ -1,6 +1,6 @@
 <x-guest-layout>
     <x-slot name="header">
-            {{ __('Forgot your password?') }}
+            {{ __('genel.forg-pass.forg-pass-title') }}
     </x-slot>
     <x-jet-authentication-card>
         <x-slot name="logo">
@@ -8,7 +8,7 @@
         </x-slot>
 
         <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+            {{ __('genel.forg-pass.fpass-not') }}
         </div>
 
         @if (session('status'))
@@ -23,13 +23,13 @@
             @csrf
 
             <div class="block">
-                <x-jet-label for="email" value="{{ __('Email') }}" />
+                <x-jet-label for="email" value="{{ __('genel.email') }}" />
                 <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
             </div>
 
             <div class="flex items-center justify-end mt-4">
                 <x-jet-button>
-                    {{ __('Email Password Reset Link') }}
+                    {{ __('genel.forg-pass.forg-pass-btn') }}
                 </x-jet-button>
             </div>
         </form>

@@ -21,7 +21,8 @@ class QuestionFactory extends Factory
     public function definition()
     {
         return [
-            'quiz_id' => rand(1,100),
+           /* 'quiz_id' => rand(1,100),*/
+           'image' => 'https://placeimg.com/400/300/animals',
             'question'=> $this->faker->sentence(rand(3,7)),
             'answer1'=> $this->faker->sentence(rand(2,4)),
             'answer2'=> $this->faker->sentence(rand(2,4)),

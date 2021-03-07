@@ -20,9 +20,9 @@ class Question extends Model
 
     public function getTruePercentAttribute()
     {
-   /*     $answer_count = $this->answers()->count();
+        $answer_count = $this->answers()->count();
         $true_answer = $this->answers()->where('answer', $this->correct_answer)->count();
-        return round((100 / $answer_count) * $true_answer);*/
+        return round((100 / $answer_count) * $true_answer);
     }
 
     public function answers()

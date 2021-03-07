@@ -12,10 +12,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     /**
      * Validate and update the given user's profile information.
      *
-     * @param  mixed  $user
-     * @param  array  $input
+     * @param mixed $user
+     * @param array $input
      * @return void
      */
+
     public function update($user, array $input)
     {
         Validator::make($input, [
@@ -24,14 +25,17 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'photo' => ['nullable', 'image', 'max:1024'],
         ])->validateWithBag('updateProfileInformation');
 
-        if (isset($input['photo'])) {
+        if (isset($input['photo']))
+        {
             $user->updateProfilePhoto($input['photo']);
         }
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
+        if ($input['email'] !== $user->email && $user instanceof MustVerifyEmail)
+        {
             $this->updateVerifiedUser($user, $input);
-        } else {
+        }
+        else
+        {
             $user->forceFill([
                 'name' => $input['name'],
                 'email' => $input['email'],
@@ -39,11 +43,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         }
     }
 
+
     /**
      * Update the given verified user's profile information.
      *
-     * @param  mixed  $user
-     * @param  array  $input
+     * @param mixed $user
+     * @param array $input
      * @return void
      */
     protected function updateVerifiedUser($user, array $input)

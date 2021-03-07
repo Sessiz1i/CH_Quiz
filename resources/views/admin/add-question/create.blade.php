@@ -13,7 +13,7 @@
                             <div class="col-md-3">
                                 @if (request()->get('title'))
                                     <div class="">
-                                        <a href="{{route('admin.add-question.store',$quiz->id)}}" type="button" class="btn btn-outline-secondary" id="create">
+                                        <a href="{{route('admin.add-question.create',$quiz->id)}}" type="button" class="btn btn-outline-secondary" id="create">
                                             <i class="fa fa-search">&nbsp;</i>{{'Clear!'}}
                                         </a>
                                     </div>

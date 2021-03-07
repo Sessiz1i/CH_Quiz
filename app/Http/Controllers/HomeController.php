@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateResult;
 use App\Models\Answers;
 use App\Models\Quiz;
-use App\Models\Listing;
 use App\Models\Result;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -80,8 +80,7 @@ class HomeController extends Controller
     public function quiz($slug)
     {
         $quiz = Quiz::whereSlug($slug)->withCount('quizList')->with('quizList.questionList', 'quizList.myAnswer', 'my_result')->first() ?? abort(404, 'Quiz bulunamadı');
-        if ($quiz->my_result)
-            return view('home.quiz_result', compact('quiz'));
+        if ($quiz->my_result) return view('home.quiz_result', compact('quiz'));
         return view('home.quiz', compact('quiz'));
     }
 
@@ -91,21 +90,34 @@ class HomeController extends Controller
         return view('home.quiz_detail', compact('quiz'));
     }
 
-    public function result(Request $request, $slug)
+    /**
+     * @param CreateResult $request
+     * @param $slug
+     * @return CreateResult
+     */
+    public function result(CreateResult $request, $slug)
     {
         $quiz = Quiz::whereSlug($slug)->with('quizList.questionList')->first() ?? abort(404, 'Quiz bulunamadı');
 
         $correct = 0;
         foreach ($quiz->quizList as $question)
         {
+            Answers::create(['user_id' => auth()->user()->id,
+                'question_id' => $question->question_id,
+                'answer' => $request->post('question' . $question->question_id),
+            ]);
 
-            Answers::create(['user_id' => auth()->user()->id, 'question_id' => $question->question_id, 'answer' => $request->post($question->question_id),]);
-            if ($question->questionList->correct_answer === $request->post($question->question_id))
+            if ($question->questionList->correct_answer === $request->post('question' . $question->question_id))
             {
                 $correct++;
             }
         }
-        Result::create(['user_id' => auth()->user()->id, 'quiz_id' => $quiz->id, 'point' => round((100 / count($quiz->quizList)) * $correct), 'correct' => $correct, 'wrong' => count($quiz->quizList) - $correct,]);
+        Result::create(['user_id' => auth()->user()->id,
+            'quiz_id' => $quiz->id,
+            'point' => round((100 / count($quiz->quizList)) * $correct),
+            'correct' => $correct,
+            'wrong' => count($quiz->quizList) - $correct,
+        ]);
         return redirect()->route('home.quiz.detay', $quiz->slug)->withInput()->withSuccess('Quiz\i tamamladın. Puanın : ' . round((100 / count($quiz->quizList)) * $correct));
     }
 

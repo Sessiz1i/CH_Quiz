@@ -40,7 +40,7 @@
                             <th scope="col" width="4%">Soru</th>
                             <th scope="col" width="6%">Durum</th>
                             <th scope="col" width="11%">Bitiş Tarihi</th>
-                            <th scope="col" width="7%">İşlemler</th>
+                            <th scope="col" width="5%">İşlemler</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -63,10 +63,11 @@
                                 <td><span title="{{ $quiz->finished_at }}">{{$quiz->finished_at ? $quiz->finished_at->diffForHumans() : null }}</span></td>
                                 {{-- <td>@if ($quiz->finished_at) {{date('d-m-Y H:i',strtotime($quiz->finished_at->diffForHumans()))}} @endif </td>--}}
                                 <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ route('admin.add-question.create', $quiz->id) }}" type="button" class="btn btn-sm btn-warning" title="Quistion Ekle Düzenle"><i class="fa fa-question"></i></a>
-                                        <a href="{{ route('admin.quizzes.edit', $quiz->id) }}" type="button" class="btn btn-sm btn-primary" title="Düzenle"><i class="fa fa-pen"></i></a>
-                                        <a class="btn btn-sm btn-danger" data-id="{{$quiz->id}}" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Sil"><i class="fa fa-times"></i></a>
+                                    <div class="btn-group d-flex" role="group">
+
+                                        <a href="{{ route('admin.add-question.index', $quiz->id) }}" class="btn btn-sm btn-warning" title="Quistion Ekle"><i class="fa fa-question">&nbsp;</i></a>
+                                        <a href="{{ route('admin.quizzes.edit',[$quiz,'submit=quizzes']) }}" class="btn btn-sm btn-primary" title="Düzenle"><i class="fa fa-pen"></i></a>
+                                        <button data-id="{{$quiz->id}}" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm btn-danger" title="Sil"><i class="fa fa-times"></i></button>
                                     </div>
                                 </td>
                             </tr>

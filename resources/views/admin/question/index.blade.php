@@ -39,10 +39,7 @@
                                 <td><strong class="text-success">{{Str::substr($question->correct_answer,-1).'. Cevap'}}</strong></td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <form method="post" action="{{route('admin.questions.edit',$question->id)}}">
-                                            @csrf @method('GET')
-                                            <a href="{{route('admin.questions.edit',$question->id)}}" type="button" class="btn btn-sm btn-primary" title="Düzenle"><i class="fa fa-pen"></i></a>
-                                        </form>
+                                        <a href="{{route('admin.questions.edit',[$question,'submit=questions'])}}" type="button" class="btn btn-sm btn-primary" title="Düzenle"><i class="fa fa-pen"></i></a>
                                         <button class="btn btn-sm btn-danger" data-question-id="{{$question->id}}" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Sil"><i class="fa fa-times"></i></button>
                                     </div>
                                 </td>

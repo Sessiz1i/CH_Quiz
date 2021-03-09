@@ -72,20 +72,25 @@ class QuestionController extends Controller
      * @param Question $question
      * @return Response
      */
-    public function show(Question $question)
+    public function show(Listing $question)
     {
-        //
+        $question->delete();
+        return redirect()->back()->withSuccess('question quiz listesinden çıkartıldı');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
+     * @param Request $request
      * @param Question $question
      * @return Quiz
      */
-    public function edit(Question $question)
+    public function edit(Request $request, Question $question)
     {
-        return view('admin.question.edit', compact('question')) ?? abort(404, ' Question Bulunamadı');
+
+        $submit = $request->submit;
+        $quiz = $request->quiz;
+        return view('admin.question.edit', compact('question', 'submit', 'quiz')) ?? abort(404, ' Question Bulunamadı');
     }
 
     /**
@@ -97,6 +102,9 @@ class QuestionController extends Controller
      */
     public function update(QuestionRequest $request, Question $question)
     {
+
+        $submit = $request->submit;
+        $quiz = $request->quiz;
         if ($request->hasFile('image'))
         {
             Storage::delete($question->image);
@@ -108,15 +116,11 @@ class QuestionController extends Controller
             $request = $request->merge(['image' => $imgPath]);
         }
 
-        $update = $question->update($request->post()) ?? abort(404, 'Quiz veya Question bulunamadı');
-        if ($update)
-        {
-            return redirect()->route('admin.questions.index')->withSuccess('Question düzenleme başarılı.');
-        }
-        else
-        {
-            return redirect()->route('admin.questions.index')->withSuccess('Bir Hata Oluştu.');
-        }
+        $question->update($request->post()) ?? abort(404, 'Quiz veya Question bulunamadı');
+
+        return redirect()->route('admin.' . $request->submit . '.index', compact('quiz'))->withSuccess('Question düzenleme başarılı.');
+
+
     }
 
 
@@ -131,7 +135,8 @@ class QuestionController extends Controller
         $question = Question::find($request->question) ?? abort(404, 'Question bulunamadı');
         $listings = Listing::where('question_id', $question->id)->get();
         Storage::delete($question->image);
-        foreach ($listings as $listing){
+        foreach ($listings as $listing)
+        {
             $listing->delete();
         }
         $question->delete();

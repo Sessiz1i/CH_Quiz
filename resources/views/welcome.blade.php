@@ -77,7 +77,9 @@
                                 </a>
                             </div>
                         @endforeach
-                        {{ $quizzes->onEachSide(1)->withQueryString()->links() }}
+                       <nav class="d-flex justify-content-end">
+                           {{ $quizzes->onEachSide(1)->withQueryString()->links() }}
+                       </nav>
                     </div>
                 </div>
             </div>

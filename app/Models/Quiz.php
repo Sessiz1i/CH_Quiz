@@ -21,11 +21,6 @@
             return $this->hasMany(Listing::class,'quiz_id','id');
         }
 
-/*        public function questions()
-        {
-            return $this->hasMany(Listing::class)->with('questionList');
-        }*/
-
         public function getmyRankAttribute()
         {
             if (auth()->user()) {

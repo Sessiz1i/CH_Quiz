@@ -13,7 +13,7 @@ class Listing extends Model
 
     public function quizList()
     {
-        return $this->hasMany(Quiz::class,'id','quiz_id');
+        return $this->hasOne(Quiz::class,'id','quiz_id');
     }
 
     public function questionList()

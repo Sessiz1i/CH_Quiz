@@ -9,19 +9,24 @@ use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Validation\Rule;
+use App\Http\Requests\QuizEdit;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 
 class ListingController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
-     * @return void
+     * @param $quiz
+     * @return Quiz
      */
-    public function index(Request $request)
+    public function index(Quiz $quiz)
     {
-        //
+
+        $quiz = $quiz->withCount('quizList')->find($quiz->id);
+        $listings = Listing::whereQuizId($quiz->id)->with('questionList')->get();
+        return view('admin.add-question.index', compact('quiz', 'listings'));
     }
 
     /**
@@ -52,65 +57,90 @@ class ListingController extends Controller
      *
      *
      * @param CreateListing $request
-     * @param $quizId
+     * @param Quiz $quiz
      * @return Quiz
      */
-    public function store(CreateListing $request, $quizId)
+    public function store(CreateListing $request, Quiz $quiz)
     {
-
-
-        $questions = Arr::except($request->post(),['_token','quizid']);
+        $questions = Arr::except($request->post(), ['_token', 'quizid']);
         foreach ($questions as $question)
         {
             Listing::create([
-                'quiz_id' => $request->quizid, 'question_id' => $question
+                'quiz_id' => $request->quizid,
+                'question_id' => $question,
             ]);
         }
-        return redirect()->route('admin.quizzes.index')->withSuccess('Questions ekleme Başarılı.');
+        return redirect()->route('admin.add-question.index', compact('quiz'))->withSuccess('Questions ekleme Başarılı.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Listing $listing
-     * @return \Illuminate\Http\Response
+     * @param Listing $listing
+     * @return Response
      */
     public function show(Listing $listing)
     {
-        //
+        return $listing;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Listing $listing
-     * @return \Illuminate\Http\Response
+     * @param Quiz $quiz
+     * @return Response
      */
-    public function edit(Listing $listing)
+    public function edit(Quiz $quiz)
     {
-        return 'Burda';
+        $quiz = $quiz->withCount('quizList')->find($quiz->id);
+
+        return view('admin.quiz.edit', compact('quiz'));
     }
+
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Listing $listing
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Quiz $quiz
+     * @return Quiz
      */
-    public function update(Request $request, Listing $listing)
+    public function update(Request $request, Quiz $quiz)
     {
-        //
+        $quiz->update($request->post()) ?? abort(404, 'quiz bulunamadı');
+
+        return redirect()->route('admin.add-question.index', compact('quiz'));
     }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param QuizEdit $request
+     * @param Quiz $quiz
+     * @return RedirectResponse
+     */
+    /*    public function update(QuizEdit $request, Quiz $quiz): RedirectResponse
+        {
+            $quiz->update($request->post()) ?? abort(404, 'Quiz Bulunamadı.');
+
+            return redirect()->route('admin.quizzes.index',compact('quiz'))->withSuccess('Quiz güncelleme başarılı');
+        }*/
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Listing $listing
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Quiz $quiz
+     * @param $question
+     * @return Request
      */
-    public function destroy(Listing $listing)
+    public function destroy(Request $request, Quiz $quiz, $question)
     {
-        //
+        $listings = Listing::whereQuizId($request->quiz)->get();
+        foreach ($listings as $listing) $listing->delete();
+        $quiz->delete();
+        return redirect()->route('admin.quizzes.index')->withSuccess('quiz silme başarılı');
     }
+
 }
+

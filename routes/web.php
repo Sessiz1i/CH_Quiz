@@ -39,9 +39,9 @@ Route::middleware(['auth:sanctum', 'verified'])->name('home.')->group(function (
 // Admin Route
 Route::middleware(['auth:sanctum', 'verified', 'isAdmin'])->prefix('admin')->name('admin.')->group(function () {
 
-    Route::resource('quizzes', QuizController::class);
-    Route::resource('questions', QuestionController::class);
-    Route::resource('quiz/{quiz_id}/add-question', ListingController::class);
+    Route::resource('quizzes',                  QuizController::class);
+    Route::resource('questions',                QuestionController::class);
+    Route::resource('quiz/{quiz}/add-question', ListingController::class);
 
 
 });

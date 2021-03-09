@@ -12,7 +12,7 @@
                 <div class="card-title d-flex justify-content-end">
                     <a  href="{{ route('admin.questions.index') }}" class="btn btn-secondary">{{ __('Geri Dön') }}&nbsp;<i class="fa fa-share"></i></a>
                 </div>
-                <form method="POST" action="{{route('admin.questions.update',$question->id)}}" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <form method="POST" action="{{route('admin.questions.update',[$question->id,'quiz='.$quiz])}}" enctype="multipart/form-data" class="needs-validation" novalidate>
                     @csrf @method('PUT')
                     <div class="input-group mb-2">
                         <input id="imageInput" type="file" name="image" value="{{$question->image}}" class="form-control @error('image') is-invalid @enderror" placeholder="Resim seçiniz">
@@ -93,7 +93,7 @@
                         @enderror
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success float-end">{{ __('Düzenle') }}</button>
+                        <button type="submit" name="submit" value="{{ $submit }}" class="btn btn-success float-end">{{ __('Düzenle') }}</button>
                     </div>
                 </form>
             </div>
